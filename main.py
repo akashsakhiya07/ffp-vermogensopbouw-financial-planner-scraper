@@ -36,7 +36,7 @@ def fetch_json(url):
         return data
 
     except requests.exceptions.RequestException as e:
-        print(f"❌ Error fetching data: {e}")
+        print(f"Error fetching data: {e}")
         return None
 
 def extract_fields(planner):
@@ -67,7 +67,7 @@ def extract_fields(planner):
 # ==========================================================
 
 def main():
-    print("🚀 Starting FFP API scraper...")
+    print("Starting FFP API scraper...")
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -75,13 +75,13 @@ def main():
     total_pages = 9  # based on API info
 
     for page in range(1, total_pages + 1):
-        print(f"📄 Fetching page {page} of {total_pages}...")
+        print(f"Fetching page {page} of {total_pages}...")
 
         url = f"{BASE_URL}&pageNumber={page}"
         data = fetch_json(url)
 
         if not data or "result" not in data:
-            print(f"⚠️ Skipping page {page} (no data)")
+            print(f" Skipping page {page} (no data)")
             continue
 
         planners = data["result"]
@@ -89,7 +89,7 @@ def main():
 
         all_planners.extend(planners)
 
-    print(f"\n✅ Total planners fetched: {len(all_planners)}")
+    print(f"\nTotal planners fetched: {len(all_planners)}")
 
     # Extract & clean
     cleaned_data = [extract_fields(p) for p in all_planners]
@@ -99,9 +99,9 @@ def main():
 
     # Export to CSV
     df.to_csv(OUTPUT_FILE, index=False, encoding="utf-8-sig")
-    print(f"📁 Data successfully saved to: {OUTPUT_FILE}")
+    print(f"Data successfully saved to: {OUTPUT_FILE}")
 
-    print("\n📊 Preview:")
+    print("\n Preview:")
     print(df.head(5))
 
 # ==========================================================
